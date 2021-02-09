@@ -1,0 +1,25 @@
+* {
+  box-sizing: content-box;
+}
+
+header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  background-color: #008383;
+  width: 100%;
+  & > h1 {
+    color: white;
+  }
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+section {
+  padding: 0.5em;
+}
