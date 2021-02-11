@@ -108,7 +108,8 @@ function crearNodo(tagName, nodeText, nodeId, nodeClasses, nodeAttributes) {
   return nodeElement;
 }
 
-console.log(document.getElementById(dogs));
+const dogs = document.getElementById(dogs);
+console.log(dogs);
 
 /**
  * Crea y añade nodos al documento HTML en base a los datos del objeto recibido, ya sea utilizando HTML templates o la función crearNodo(), 

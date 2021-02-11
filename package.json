@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Aplicacion que solicita recursos a la Dog API",
   "main": "main.js",
-  "dependencies": {"gulp-eslint": "^6.0.0"},
+  "dependencies": {
+    "gulp-eslint": "^6.0.0"
+  },
   "devDependencies": {
     "browser-sync": "^2.26.14",
     "gulp": "^4.0.2",
