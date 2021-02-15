@@ -52,30 +52,6 @@ gulp.task('serve', gulp.series(['sass'], gulp.series(['doc']), function () {
 
 gulp.task('default', gulp.series(['serve']));
 
-/*
-//!Versión inicial
-gulp.task('sass', function () {
-  return gulp.src('./style/*.scss')
-    .pipe(sass().on('error', sass.logError))
-    .pipe(gulp.dest('./style'));
-});
-
-gulp.task('sass:watch', function () {
-  gulp.watch('./style/*.scss', gulp.series(['sass']));
-});
-
-// Static server
-gulp.task('browser-sync', function () {
-  browserSync.init({
-    server: {
-      baseDir: "./"
-    }
-  });
-});
-
-gulp.task('default', gulp.series(['browser-sync']));
-*/
-
 //!Nueva sintaxis
 /*
 const { watch, series } = require('gulp');

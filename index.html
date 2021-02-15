@@ -9,6 +9,11 @@
   <!-- CSS -->
   <link rel="stylesheet" href="./style/main.css">
 
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+
   <title>U09T01</title>
 </head>
 
@@ -19,7 +24,7 @@
   <main>
     <section id="panel">
       <section>
-        <form>
+        <form id="tipoconexion">
           <input type="radio" id="xml" name="request" value="xml">
           <label for="xml">XMLHttpRequest</label><br>
           <input type="radio" id="fetch" name="request" value="fetch">
@@ -34,7 +39,7 @@
       </section>
 
       <template id="doglist">
-          <option></option>
+        <option></option>
       </template>
 
       <section id="fotoPerro">

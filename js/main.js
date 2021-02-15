@@ -1,3 +1,48 @@
+const breedURL = 'https://dog.ceo/api/breeds/list/all';
+const photoURL1 = 'https://dog.ceo/api/breed/';
+const photoURL2 = '/images/random';
+
+let radios = document.getElementById('tipoconexion').getElementsByTagName('input');
+let connectionType = null;
+for (let i = 0; i < radios.length; i++) {
+  radios[i].addEventListener('change', function () {
+    //(connectionType) ? console.log(connectionType.value) : null;
+    if (this !== connectionType) {
+      connectionType = this;
+      selectConnection(connectionType.value);
+    }
+    console.log(this.value)
+  });
+}
+
+//!Crear event listeners para las opciones del select (la lista de perros)
+
+/**
+ * Ejecuta las llamadas a las funciones de la conexión seleccionada.
+ * @param {String} type - Tipo de conexión marcada en el formulario de botones radio.
+ */
+function selectConnection(type) {
+  switch (type) {
+    case "xml": conexionXML(breedURL);
+      break;
+    case "fetch": {
+      peticionFetch(breedURL)
+        .then(response => JSON.parse(response))
+        .then(data => {
+          let breeds = Object.keys(data.message);
+          breeds.forEach(dog => listarPerros(dog));
+        })
+        .finally(() => console.log("Terminado."))
+        .catch(error => console.error(error));
+      break;
+    }
+    case "jquery": var jsonJQuery = peticionJQuery(breedURL);
+      console.log(jsonJQuery);
+      break;
+    default: console.log('Seleccione un tipo de conexión.');
+  }
+}
+
 /**
  *Establece una primera conexión de tipo XMLHttp con la Dog API para obtener la lista de razas.
  *
@@ -32,8 +77,6 @@ function conexionXML(url) {
   }
 }
 
-conexionXML('https://dog.ceo/api/breeds/list/all');
-
 /**
  *Establece una segunda conexión de tipo XMLHttp con la Dog API para obtener una foto aleatoria de la raza seleccionada.
  *
@@ -42,7 +85,7 @@ conexionXML('https://dog.ceo/api/breeds/list/all');
 function dogPhoto(dog) {
   let dogexion = new XMLHttpRequest();
   dogexion.onreadystatechange = procesarEventos;
-  dogexion.open('GET', 'https://dog.ceo/api/breed/' + dog + '/images/random', true);
+  dogexion.open('GET', photoURL1 + dog + photoURL2, true);
   dogexion.send();
 
   /**
@@ -71,6 +114,41 @@ $.getJSON('https://dog.ceo/api/breed/' + dogURL + '/images/random', function (re
   $('.demo-image').html('<img src=\'' + result.message + '\'>');
 });
 */
+
+/**
+ * JQUERY - Conexión con API mediante Jquery
+ * @param {String} path - URL de la API a la que nos queremos conectar mediante el métod JQuery
+ */
+function peticionJQuery(path) {
+  $.ajax({
+    url: path, //URL de la petición
+    data: {}, //información a enviar, puede ser una cadena
+    type: 'GET', //tipo de la petición: POST o GET
+    dataType: 'json', //tipo de dato que se espera
+    success: function (json) { //función a ejecutar si es satisfactoria 
+      let breeds = Object.keys(json.message);
+      breeds.forEach(dog => listarPerros(dog));
+    }, error: function (jqXHR, status, error) { //función error 
+      alert('Disculpe, existió un problema. Vuelva a intentarlo.');
+    }, // función a ejecutar sin importar si la petición falló o no 
+    complete: function (jqXHR, status) { console.log('Petición realizada'); }
+  });
+}
+
+/**
+ * FETCH - Función asíncrona para realizar peticiones fetch. 
+ * @param {*} url 
+ */
+const peticionFetch = async (url) => {
+  const response = await fetch(url);
+  if (!response.ok)
+    throw new Error("WARN", response.status);
+  const data = await response.text();
+  //console.log(data);
+  return data;
+}
+
+//!Función para eliminar nodos
 
 /**
  *Crea un nodo en el DOM con la etiqueta HTML y los atributos que queramos asignarle.
@@ -108,7 +186,7 @@ function crearNodo(tagName, nodeText, nodeId, nodeClasses, nodeAttributes) {
   return nodeElement;
 }
 
-const dogs = document.getElementById(dogs);
+const dogs = document.getElementById('dogs');
 console.log(dogs);
 
 /**
