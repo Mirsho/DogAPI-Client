@@ -23,7 +23,8 @@ section {
     align-self: center; }
     section > #perros > button {
       margin-top: 0.5em; }
-
-section#tipoconexion {
-  display: flex;
-  flex-direction: row; }
+  section > #tipoconexion {
+    display: flex;
+    flex-direction: row; }
+  section > #fotoperro > img {
+    width: 400px; }

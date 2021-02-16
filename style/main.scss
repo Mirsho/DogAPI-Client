@@ -21,17 +21,21 @@ body {
 
 section {
   padding: 0.5em;
-  & > #perros{
+  & > #perros {
     display: none;
     flex-direction: column;
     align-self: center;
-    & > button{
+    & > button {
       margin-top: 0.5em;
     }
   }
-}
-
-section#tipoconexion {
-  display: flex;
-  flex-direction: row;
+  & > #tipoconexion {
+    display: flex;
+    flex-direction: row;
+  }
+  & > #fotoperro {
+    & > img {
+      width: 400px;
+    }
+  }
 }
