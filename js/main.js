@@ -2,6 +2,17 @@ const breedURL = 'https://dog.ceo/api/breeds/list/all';
 const photoURL1 = 'https://dog.ceo/api/breed/';
 const photoURL2 = '/images/random';
 
+
+document.addEventListener("DOMContentLoaded", function (event) {
+  console.log(event);
+  console.log("DOM fully loaded and parsed");
+  //Asignamos el atributo display a none.
+  let x = document.getElementById("perros");
+  if (x.style.display !== "none") {
+    x.style.display = "none";
+  }
+});
+
 let radios = document.getElementById('tipoconexion').getElementsByTagName('input');
 let connectionType = null;
 for (let i = 0; i < radios.length; i++) {
@@ -12,20 +23,32 @@ for (let i = 0; i < radios.length; i++) {
       selectConnection(connectionType.value);
     }
     console.log(this.value)
+    //Mostramos la sección de la lista de razas y el botón de nuevo perro.
+    let x = document.getElementById("perros");
+    if (x.style.display === "none") {
+      x.style.display = "flex";
+    }
   });
 }
 
 //!Crear event listeners para las opciones del select (la lista de perros)
+let newDog = document.getElementById('newdog');
+newDog.addEventListener('click', () => dogPhoto(dogs.value));
 
+//!REVISAR
+let selectedDog = document.getElementById('dogs');
+selectedDog.addEventListener('change', () => dogPhoto(dogs.value));
 /**
  * Ejecuta las llamadas a las funciones de la conexión seleccionada.
  * @param {String} type - Tipo de conexión marcada en el formulario de botones radio.
  */
 function selectConnection(type) {
   switch (type) {
-    case "xml": conexionXML(breedURL);
+    case "xml": clearNodes(document.getElementById('fotoperro'));
+      conexionXML(breedURL);
       break;
     case "fetch": {
+      clearNodes(document.getElementById('fotoperro'));
       peticionFetch(breedURL)
         .then(response => JSON.parse(response))
         .then(data => {
@@ -36,7 +59,8 @@ function selectConnection(type) {
         .catch(error => console.error(error));
       break;
     }
-    case "jquery": var jsonJQuery = peticionJQuery(breedURL);
+    case "jquery": clearNodes(document.getElementById('fotoperro'));
+      var jsonJQuery = peticionJQuery(breedURL);
       console.log(jsonJQuery);
       break;
     default: console.log('Seleccione un tipo de conexión.');
@@ -69,6 +93,7 @@ function conexionXML(url) {
         dogPhoto(firstDog);
       }
       else {
+        //!Ocultar spinner si lo hubiera
         alert(dogexion.statusText);
       }
     } else if (dogexion.readyState == 1 || dogexion.readyState == 2 || dogexion.readyState == 3) {
@@ -83,6 +108,7 @@ function conexionXML(url) {
  * @param {*} dog
  */
 function dogPhoto(dog) {
+  clearNodes(document.getElementById('fotoperro'));
   let dogexion = new XMLHttpRequest();
   dogexion.onreadystatechange = procesarEventos;
   dogexion.open('GET', photoURL1 + dog + photoURL2, true);
@@ -99,9 +125,10 @@ function dogPhoto(dog) {
         console.log(fotoPerro.message);
         let foto = crearNodo("img", null, null, [], [{ name: 'src', value: fotoPerro.message }, { name: 'alt', value: dog }]);
         console.log(foto);
-        document.getElementById('fotoPerro').appendChild(foto);
+        document.getElementById('fotoperro').appendChild(foto);
       }
       else {
+        //!Ocultar spinner si lo hubiera
         alert(dogexion.statusText);
       }
     } else if (dogexion.readyState == 1 || dogexion.readyState == 2 || dogexion.readyState == 3) {
@@ -109,11 +136,6 @@ function dogPhoto(dog) {
     }
   }
 }
-/*
-$.getJSON('https://dog.ceo/api/breed/' + dogURL + '/images/random', function (result) {
-  $('.demo-image').html('<img src=\'' + result.message + '\'>');
-});
-*/
 
 /**
  * JQUERY - Conexión con API mediante Jquery
@@ -130,7 +152,8 @@ function peticionJQuery(path) {
       breeds.forEach(dog => listarPerros(dog));
     }, error: function (jqXHR, status, error) { //función error 
       alert('Disculpe, existió un problema. Vuelva a intentarlo.');
-    }, // función a ejecutar sin importar si la petición falló o no 
+    }, finally: function(){},
+    // función a ejecutar sin importar si la petición falló o no 
     complete: function (jqXHR, status) { console.log('Petición realizada'); }
   });
 }
@@ -149,6 +172,16 @@ const peticionFetch = async (url) => {
 }
 
 //!Función para eliminar nodos
+/**
+ *Elimina los nodos hijo del nodo inidcado, para eliminar la foto del perro.
+ *
+ * @param {*} myNode - Nodo cuyos hijos deseamos eliminar.
+ */
+function clearNodes(myNode) {
+  while (myNode.firstChild) {
+    myNode.removeChild(myNode.lastChild);
+  }
+}
 
 /**
  *Crea un nodo en el DOM con la etiqueta HTML y los atributos que queramos asignarle.

@@ -10,9 +10,9 @@ sass.compiler = require('node-sass');
 
 // Compile sass into CSS & auto-inject into browsers
 gulp.task('sass', function () {
-  return gulp.src("./css/*.scss")
+  return gulp.src("./style/*.scss")
     .pipe(sass())
-    .pipe(gulp.dest("./css"))
+    .pipe(gulp.dest("./style"))
     .pipe(browserSync.stream());
 });
 
@@ -42,7 +42,7 @@ gulp.task('serve', gulp.series(['sass'], gulp.series(['doc']), function () {
     server: "./"
   });
 
-  gulp.watch("./css/*.scss", gulp.series(['sass']));
+  gulp.watch("./style/*.scss", gulp.series(['sass']));
   gulp.watch('./js/*.js', gulp.series(['doc']));
   //Quité la tarea lint de la llamada inicial porque detenía las tareas watch
   gulp.watch('./js/*.js', gulp.parallel(['lint']));

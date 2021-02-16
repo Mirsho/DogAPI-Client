@@ -13,8 +13,17 @@ header {
 body {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center; }
 
 section {
   padding: 0.5em; }
+  section > #perros {
+    display: none;
+    flex-direction: column;
+    align-self: center; }
+    section > #perros > button {
+      margin-top: 0.5em; }
+
+section#tipoconexion {
+  display: flex;
+  flex-direction: row; }
